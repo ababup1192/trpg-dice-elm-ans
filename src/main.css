@@ -1,0 +1,27 @@
+body {
+  font-family: 'Source Sans Pro', 'Trebuchet MS', 'Lucida Grande', 'Bitstream Vera Sans', 'Helvetica Neue', sans-serif;
+  margin: 0;
+  text-align: center;
+  color: #293c4b;
+}
+
+.die-faces {
+  display: flex;
+  justify-content: center;
+}
+
+.die-face {
+  display: flex;
+  margin-left: 10px;
+  font-size: 30px;
+}
+
+.die-setting {
+  margin: 20px 0;
+}
+
+.die {
+  margin: 0 20px;
+  width: 50px;
+  font-size: 20px;
+}
