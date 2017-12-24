@@ -10,12 +10,12 @@ import Random
 
 
 type alias Model =
-    { dieFaces : List Int, numOfDice : Int, numOfFace : Int, restOfDice : Int }
+    { dieFaces : List Int, numOfDice : Int, numOfFace : Int }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( { dieFaces = [ 1 ], numOfDice = 1, numOfFace = 6, restOfDice = 1 }, Cmd.none )
+    ( { dieFaces = [ 1 ], numOfDice = 1, numOfFace = 6 }, Cmd.none )
 
 
 
@@ -30,7 +30,7 @@ type Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update msg ({ dieFaces, numOfDice, numOfFace, restOfDice } as model) =
+update msg ({ dieFaces, numOfDice, numOfFace } as model) =
     case msg of
         ChangeNumOfFace str ->
             let
@@ -47,15 +47,13 @@ update msg ({ dieFaces, numOfDice, numOfFace, restOfDice } as model) =
                 ( { model | numOfDice = n }, Cmd.none )
 
         Roll ->
-            ( { model | dieFaces = [], restOfDice = numOfDice - 1 }, Random.generate NewFace (Random.int 1 numOfFace) )
+            ( { model | dieFaces = [] }
+            , Cmd.batch
+                (List.range 1 numOfDice |> List.map (\_ -> Random.generate NewFace (Random.int 1 numOfFace)))
+            )
 
         NewFace newFace ->
-            if restOfDice == 0 then
-                ( { model | dieFaces = newFace :: dieFaces }, Cmd.none )
-            else if restOfDice >= 0 then
-                ( { model | dieFaces = newFace :: dieFaces, restOfDice = restOfDice - 1 }, Random.generate NewFace (Random.int 1 numOfFace) )
-            else
-                ( model, Cmd.none )
+            ( { model | dieFaces = newFace :: dieFaces }, Cmd.none )
 
 
 
